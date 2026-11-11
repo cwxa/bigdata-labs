@@ -1,0 +1,56 @@
+============================================================
+Step 2  dataset loaded
+  data   : (400, 4096) (400 samples, each 64×64 = 4096 dimensions)
+  images : (400, 64, 64)
+  target : (400,)  40 subjects, 10 images each
+============================================================
+Step 3  original faces visualized → results_en/fig1_original_faces.png
+============================================================
+Step 4  PCA completed: X (400, 4096) → Z (400, 20)
+  eigenvalues (descending): [18.84  11.072  6.305  3.955  2.856  2.498  1.92   1.611  1.549  1.323
+  1.262  1.137  0.986  0.908  0.841  0.774  0.727  0.645  0.596  0.591]
+  explained variance ratio: [0.2381 0.1399 0.0797 0.05   0.0361 0.0316 0.0243 0.0204 0.0196 0.0167
+ 0.016  0.0144 0.0125 0.0115 0.0106 0.0098 0.0092 0.0082 0.0075 0.0075]
+  cumulative explained variance of top 20: 76.34%
+============================================================
+Step 5  eigenfaces visualized → results_en/fig2_eigenfaces.png
+============================================================
+Step 6  random sample: index 172 (subject 17 )
+        comparison figure saved → results_en/fig3_reconstruction_compare.png
+Step 7  reconstruction-process figure saved → results_en/fig4_reconstruction_process.png
+  coefficients of this sample (first 10): [-4.105  1.992 -0.06   1.911  0.055 -1.5   -0.018  0.93   0.683 -1.263]
+============================================================
+All 7 steps completed. Output directory: results_en/
+============================================================
+Extended 1  k-sweep metrics (PSNR = per-image average; k=0 is the mean-face baseline)
+   k        MSE      RMSE    PSNR(dB)   cum.var
+  0(base)   0.01927  0.13881    17.516     0.00%
+  1         0.01468  0.12116    18.663    23.81%
+  2         0.01198  0.10947    19.487    37.81%
+  3         0.01045  0.10221    20.052    45.78%
+  5         0.00879  0.09375    20.798    54.38%
+  10        0.00662  0.08137    22.036    65.63%
+  16        0.00518  0.07199    23.102    73.10%
+  20        0.00456  0.06752    23.640    76.34%
+  50        0.00243  0.04931    26.359    87.38%
+  66        0.00192  0.04384    27.362    90.02%
+  100       0.00125  0.03529    29.182    93.54%
+  150       0.00071  0.02662    31.581    96.32%
+Extended 2  Theory MSE(k=20) = 0.004571 | Measured = 0.004559 | rel. deviation 0.25%
+            per-image MSE at k=20: mean 0.00456 +/- std 0.00150 (400 images)
+Extended 3  Metric curves saved → results_en/fig5_metric_curves.png
+Extended 4  Cumulative reconstruction saved → results_en/fig6_cumulative_reconstruction.png
+Extended 5  Residual figure saved → results_en/fig7_residual.png
+            (sample index 172: k=20 reconstruction MSE = 0.00355)
+Extended 6  Decomposition timing (median of 3 runs):
+            SVD          median 1.22 s (range 0.46–1.53 s)
+            Cov + eigh   median 20.39 s (range 18.57–21.71 s)
+Extended 7  Two-path equivalence: max abs diff between SVD and cov+eigh k=20 reconstructions = 1.97e-07
+Extended 8  Identity separability (within/between mean distance, lower = better):
+            Pixel space (4096-d): within 8.3777 / between 12.4144 -> ratio 0.675
+            PCA space (20-d): within 6.0258 / between 10.7313 -> ratio 0.562
+            Figure 8 saved → results_en/fig8_identity_separation.png
+Extended 9  SSIM (all-sample mean): k=1: 0.463  k=5: 0.540  k=10: 0.615  k=20: 0.698  k=50: 0.812  k=100: 0.888
+Extended 10 LOO 1-NN accuracy: k=5: 76.0%  k=10: 91.0%  k=20: 94.8%  k=30: 95.2%  k=50: 95.5%  k=66: 95.5%  k=100: 95.2%  k=150: 95.5%
+            Figure 9 saved → results_en/fig9_task_metrics.png
+============================================================

@@ -1,0 +1,20 @@
+\begin{table}[!t]
+  \caption{Full-sample reconstruction quality. PSNR and SSIM are
+  averaged over images; $k=0$ uses the mean face.}
+  \label{tab:k}
+  \centering
+  \footnotesize
+  \setlength{\tabcolsep}{7pt}
+  \begin{tabular}{@{}lrrr@{}}
+    \toprule
+    $k$ & MSE & PSNR (dB) & SSIM \\
+    \midrule
+    0 (mean face) & 0.01927 & 17.516 & 0.451 \\
+    5 & 0.00879 & 20.798 & 0.540 \\
+    10 & 0.00662 & 22.036 & 0.615 \\
+    \textbf{20} & \textbf{0.00456} & \textbf{23.640} & \textbf{0.698} \\
+    50 & 0.00243 & 26.359 & 0.812 \\
+    100 & 0.00125 & 29.182 & 0.888 \\
+    \bottomrule
+  \end{tabular}
+\end{table}

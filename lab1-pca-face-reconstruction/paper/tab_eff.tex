@@ -1,0 +1,21 @@
+\begin{table}[!t]
+  \caption{Solver times: median and range of three runs.
+  Array storage estimates assume float64 and exclude workspace.}
+  \label{tab:eff}
+  \centering
+  \footnotesize
+  \setlength{\tabcolsep}{4pt}
+  \begin{tabular}{@{}lrrr@{}}
+    \toprule
+    Solver & Median & Range & Array \\
+           & (s) & (s) & (MB) \\
+    \midrule
+    Covariance + eigh & 23.4 & 21.4--24.7 & 134 \\
+    Economy SVD & 0.97 & 0.82--1.43 & 13.1 \\
+    \bottomrule
+  \end{tabular}
+  \vspace{3pt}
+  \parbox{\columnwidth}{\scriptsize Arrays: covariance matrix $C$
+  ($4096\times4096$) and centered data $\tilde X$ ($400\times4096$),
+  respectively. These are reference array sizes, not measured peak memory.}
+\end{table}
