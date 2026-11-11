@@ -1,0 +1,10 @@
+{
+  "transactions": 1892,
+  "distinct_items": 1990,
+  "total_item_occurrences": 22300,
+  "avg_length": 11.7865,
+  "min_length": 5,
+  "max_length": 86,
+  "items_ratio_ge_5pct": 14,
+  "items_ratio_ge_1pct": 279
+}

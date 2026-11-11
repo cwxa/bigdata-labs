@@ -1,0 +1,5 @@
+﻿min_sup,min_count,frequent_itemsets,max_k,apriori_seconds,fp_growth_seconds,speedup_fp_over_apriori,fp_tree_nodes,fp_tree_depth
+0.02,37.84,96,2,0.0219,0.014,1.568,3205,22
+0.01,18.92,335,3,0.0981,0.0349,2.808,8019,33
+0.005,9.46,1115,4,0.5087,0.0968,5.256,13824,52
+0.002,3.78,6524,7,3.999,0.2299,17.394,18851,73
