@@ -24,13 +24,13 @@ import csv
 import random
 import time
 from pathlib import Path
-from typing import Dict, List, Tuple
+from typing import List, Tuple
 
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
-from apriori import generate_rules, load_transactions, mine, fmt_itemset
+from apriori import load_transactions, mine, fmt_itemset
 
 # 路径基于脚本位置解析，保证从任意工作目录调用都能命中仓库内数据与产物目录
 _HERE = Path(__file__).resolve().parent

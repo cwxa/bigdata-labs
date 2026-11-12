@@ -21,8 +21,7 @@ import random
 import unittest
 from pathlib import Path
 
-from apriori import (apriori, apriori_gen, generate_rules, flat_itemsets,
-                     load_transactions)
+from apriori import (apriori, apriori_gen, generate_rules, load_transactions)
 
 # 真实数据集路径（基于脚本位置解析，不依赖调用时的工作目录）
 DATA_CSV = str(Path(__file__).resolve().parent.parent / "data" / "array_data.csv")

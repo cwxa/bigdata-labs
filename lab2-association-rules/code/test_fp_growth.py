@@ -21,7 +21,7 @@ import unittest
 from pathlib import Path
 
 from apriori import apriori, load_transactions
-from fp_growth import FPTree, fp_growth, summarize_by_k
+from fp_growth import fp_growth, summarize_by_k
 
 # 真实数据集路径（基于脚本位置解析，不依赖调用时的工作目录）
 DATA_CSV = str(Path(__file__).resolve().parent.parent / "data" / "array_data.csv")
