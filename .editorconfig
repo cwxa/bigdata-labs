@@ -1,0 +1,23 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 4
+
+[*.{yml,yaml,json}]
+indent_size = 2
+
+[*.md]
+# 中文 Markdown 的续行空格有意义，不做裁剪
+trim_trailing_whitespace = false
+
+[*.{tex,bib}]
+indent_size = 2
+
+[*.{png,pdf,pkz}]
+# 二进制文件不参与文本规则
+insert_final_newline = false
