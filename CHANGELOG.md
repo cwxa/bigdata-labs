@@ -17,7 +17,8 @@
 - **论文源码**：两篇 IEEEtran 论文的 TeX 源码、矢量图、数字与表格生成脚本，以及带交付守卫的一键构建（缺字 / 超宽浮动体 / 浮动体跑参考文献之后 / 孤立 `\label` / PDF 反向文本校验）。
 - **自动化测试 34 例**：实验二 23 例（讲义示例逐轮断言、暴力全枚举对拍、FP-growth 对 Apriori 互证），实验一 11 例（正交性、降序、双路径等价、误差口径恒等式、边界条件）。
 - **开源治理**：`CONTRIBUTING.md`、`CODE_OF_CONDUCT.md`（含学术诚信条款）、`SECURITY.md`、Issue 表单与 PR 模板。
-- **CI**：ruff 静态检查（`E9` + `F`）+ Python 3.12 / 3.13 双版本单元测试 + 全部脚本编译性检查。
+- **CI**：ruff 静态检查（`E9` + `F`）+ Python 3.12 / 3.13 双版本单元测试 + 全部脚本编译性检查；工作流跑在 Node 24 版 actions 上。
+- **依赖治理**：Dependabot 按月检查 pip 与 github-actions，PR 由 CI 把关后合入。
 
 ### Changed
 
