@@ -4,6 +4,7 @@
 
 > Two course projects for *Big Data Analysis and Processing*: (1) PCA-based face reconstruction on Olivetti faces, (2) Apriori and FP-growth frequent-itemset mining on sparse transaction data. Each lab ships pure NumPy implementations, quantitative evaluation scripts, recorded result CSV/figures, and an IEEE-format paper source that compiles with one command. Docs are in Chinese; code, figures and paper sources are English- or Chinese-labelled as noted per lab.
 
+[![CI](https://github.com/cwxa/bigdata-labs/actions/workflows/ci.yml/badge.svg)](https://github.com/cwxa/bigdata-labs/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/Python-3.12%2B-blue.svg)](requirements.txt)
 
@@ -24,9 +25,14 @@
 
 ```
 bigdata-labs/
+├── README.md · CONTRIBUTING.md · CHANGELOG.md
+├── LICENSE · SECURITY.md · CODE_OF_CONDUCT.md
+├── requirements.txt · pyproject.toml      # 依赖与 ruff 检查口径
+├── .github/                               # CI 工作流 + Issue / PR 模板
 ├── lab1-pca-face-reconstruction/
 │   ├── pca_face_reconstruction.py        # 中文版：7 步实验 + 10 项扩展分析
 │   ├── pca_face_reconstruction_en.py     # 英文版：同一流水线，英文图表标签
+│   ├── test_pca.py                        # 11 个用例：正交性 / 降序 / 双路径 / 误差口径
 │   ├── data/olivetti_py3.pkz             # Olivetti faces 缓存（离线可用）
 │   ├── results/                          # 9 张结果图 + metrics_table.csv + 控制台日志
 │   ├── results_en/                       # 英文版控制台日志（论文数字复核用）
@@ -57,7 +63,8 @@ pip install -r requirements.txt
 
 ```bash
 cd lab1-pca-face-reconstruction
-python pca_face_reconstruction.py     # 约 40 s，重写 results/ 下全部产物
+python -m unittest test_pca -v        # 11 个用例，约 0.05 s，不依赖数据集与绘图
+python pca_face_reconstruction.py     # 完整实验，约 40 s，重写 results/ 下全部产物
 ```
 
 数据集已随仓库提供缓存（`data/olivetti_py3.pkz`），`fetch_olivetti_faces` 命中缓存后直接离线加载，不会联网下载。
@@ -75,6 +82,21 @@ python analyze_rule_robustness.py                   # bootstrap 200 次，约 20
 
 ---
 
+## 工程与质量保障
+
+**34 个单元测试**，全部以数学恒等式或独立实现为依据，不做「跑通即通过」的断言：
+
+| 套件 | 用例数 | 验证依据 |
+|---|---:|---|
+| `lab2 · test_apriori` / `test_fp_growth` | 23 | 讲义示例逐轮断言、暴力全枚举 `2^n-1` 子集对拍、FP-growth 与 Apriori 在真实数据三档支持度上逐个一致 |
+| `lab1 · test_pca` | 11 | `W·Wᵀ = I`、特征值降序、SVD 与协方差路径重构逐元素一致、`MSE = (n-1)/(nd)·Σλ` 恒等式（`1e-12`）、`L=0` / `L=d` / 非法参数边界 |
+
+**CI**（[`.github/workflows/ci.yml`](.github/workflows/ci.yml)）在 Python 3.12 与 3.13 上跑两套测试，另有独立的 `ruff check` 作业（口径写死在 `pyproject.toml`，本地与 CI 同一标准，不设两套规矩）。CI 刻意**不**跑完整绘图流水线——无头环境里字体缺失只会静默降级，用它宣称"结果正确"是假绿。
+
+**协作约定**：`main` 为保护分支，改动走 `feature/` `bugfix/` 分支 + PR；提交信息遵循 Conventional Commits；版本由 Git tag 与 [CHANGELOG.md](CHANGELOG.md) 单点承载。详见 [CONTRIBUTING.md](CONTRIBUTING.md)、[CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) 与 [SECURITY.md](SECURITY.md)。
+
+---
+
 ## 结果速览
 
 ### 实验一：k=20 时保留了 76.34% 方差
@@ -89,7 +111,7 @@ python analyze_rule_robustness.py                   # bootstrap 200 次，约 20
 
 三条可验证的结论：
 
-1. **理论口径自洽**：用特征值之和预测 `MSE(k=20) = 0.004571`，与实测 `0.004559` 相对偏差仅 **0.25%**，说明 PCA 重构误差的理论与实现没有脱节。
+1. **误差口径可对账**：日志报的「理论预测」`Σλ/d = 0.004571` 与实测 `0.004559` 相差 0.25%，这个差额恰好等于 `1/n`（n=400）——因为特征值取自样本协方差（除以 `n-1`），而逐像素 MSE 除以 `n·d`。按 `(n-1)/(nd)·Σλ` 修正后两值在浮点级一致（`test_pca.py` 对这条恒等式做 `1e-12` 断言）。**这 0.25% 是归一化口径，不是数值误差，也不能当作实现正确的证据**——把它当"理论验证实现"是最容易犯的错觉。
 2. **两条求解路径等价**：SVD 与「协方差 + `eigh`」的 k=20 重构最大绝对差为 `1.97e-07`，属于浮点噪声量级；耗时比为 **3.08 s : 13.37 s（约 4.3 倍）**——4096 维下用 SVD 不必显式构造 4096×4096 协方差矩阵，这是实测而非教科书结论。
 3. **降维确实提升了可分性**：类内/类间平均距离比从像素空间的 0.675 降到 20 维 PCA 空间的 0.562，与 1-NN 识别率从 76% 涨到 94.8% 相互印证。
 
@@ -151,4 +173,4 @@ Two self-contained lab projects for a Big Data course, each with from-scratch im
 
 **Lab 2 — Association rule mining.** Hand-written Apriori (with two support-counting strategies and a pruning-cost analysis) and FP-growth verified against Apriori item by item. On 1892 sparse transactions, FP-growth is 1.57× faster than Apriori at 2% minimum support and 17.4× faster at 0.2%. Rule stability is assessed with 200-round bootstrap resampling: at 1% support only 27 of 49 rules keep their 90% confidence lower bound above the threshold, so high-lift rules are not reported as strong associations without that caveat.
 
-Run `pip install -r requirements.txt`, then `python pca_face_reconstruction.py` or `python -m unittest test_apriori test_fp_growth`. Papers build with `python build.py` inside each `paper/` directory (requires Tectonic). Licensed MIT.
+Run `pip install -r requirements.txt`, then `python pca_face_reconstruction.py` or `python -m unittest test_apriori test_fp_growth`. Papers build with `python build.py` inside each `paper/` directory (requires Tectonic). 34 unit tests (23 + 11) assert mathematical identities rather than smoke-testing, and CI runs them on Python 3.12/3.13 alongside `ruff check`. Licensed MIT.

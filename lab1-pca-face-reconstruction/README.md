@@ -22,6 +22,7 @@
 |---|---|
 | `pca_face_reconstruction.py` | 中文版主脚本，图表标签为中文 |
 | `pca_face_reconstruction_en.py` | 英文版，同一流水线，图表标签为英文（供英文论文使用） |
+| `test_pca.py` | 11 个用例验证 `pca()` 的数学性质：正交性、降序、双路径等价、误差口径恒等式、边界条件 |
 | `data/olivetti_py3.pkz` | sklearn 缓存格式的 Olivetti 数据集，保证离线可跑 |
 | `results/` | 9 张结果图 + `metrics_table.csv` + `console_output.txt` |
 | `results_en/console_output.txt` | 英文版运行日志；`paper/build.py` 用它交叉校验中英文两次运行的指标是否一致 |
@@ -30,7 +31,8 @@
 ## 3. 运行
 
 ```bash
-python pca_face_reconstruction.py
+python -m unittest test_pca -v        # 11 个用例，约 0.05 s，不依赖数据集与绘图
+python pca_face_reconstruction.py     # 完整实验，约 40 s
 ```
 
 - 环境：Python 3.12+、NumPy、Matplotlib、scikit-learn（见仓库根 `requirements.txt`）
@@ -43,7 +45,7 @@ python pca_face_reconstruction.py
 ## 4. 关键结论
 
 - **k=20 保留 76.34% 方差**，MSE 0.00456、PSNR 23.64 dB；k=0（仅用均值脸）的 MSE 为 0.01927，说明前 20 个主成分解释了约 76% 的重构误差下降。
-- **理论与实现自洽**：用特征值之和预测 k=20 的 MSE = 0.004571，实测 0.004559，相对偏差 0.25%。
+- **误差口径可对账**：日志里「理论预测」`Σλ/d = 0.004571` 与实测 `0.004559` 相差 0.25%，该差额恰好等于 `1/n = 1/400`，来源是样本协方差除以 `n-1` 而逐像素 MSE 除以 `n·d`。按 `(n-1)/(nd)·Σλ` 修正后两值在浮点级一致。**它不是数值误差，不能当作实现正确的证据**。
 - **SVD 优于显式协方差矩阵**：4096 维下 SVD 中位 3.08 s，协方差 + `eigh` 中位 13.37 s，约 4.3 倍差距；两者重构结果最大绝对差 `1.97e-07`（浮点噪声级），可视为等价。
 - **降维提升可分性**：类内/类间平均距离比 0.675（4096 维）→ 0.562（20 维）；1-NN 留一法识别率 76.0%（k=5）→ 94.8%（k=20）→ 95.5%（k≥50）。
 - **SSIM 比 PSNR 更贴近人眼**：k=20 时 PSNR 已达 23.6 dB，但 SSIM 仅 0.698，说明结构细节仍有可见损失；要人眼满意需 k≥50（SSIM 0.812）。
