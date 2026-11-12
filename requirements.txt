@@ -4,4 +4,4 @@ matplotlib>=3.8
 scikit-learn>=1.4
 
 # 论文构建脚本（paper/build.py）的 PDF 反向校验依赖
-pymupdf>=1.24
+pymupdf>=2.1
