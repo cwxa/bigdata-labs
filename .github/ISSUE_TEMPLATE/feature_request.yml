@@ -1,0 +1,55 @@
+name: 改进建议
+description: 提出新的分析维度、代码改进或文档建议
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        请先说明「要解决什么问题」，再说「怎么改」。方案可以讨论，问题必须具体。
+
+  - type: dropdown
+    id: scope
+    attributes:
+      label: 涉及部分
+      options:
+        - 实验一 · PCA 人脸重建（lab1）
+        - 实验二 · 关联规则挖掘（lab2）
+        - 论文源码与构建（paper）
+        - 工程与 CI
+        - 文档
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: 想解决的问题
+      description: 现状哪里不够好？如果有数据支撑（耗时、精度、维护成本），请给出。
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: 建议方案
+      description: 简述实现思路。若涉及算法变更，请说明为什么现有实现不足。
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: 备选方案
+      description: 你考虑过但放弃的做法，以及放弃的原因（可选）。
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: scope-check
+    attributes:
+      label: 边界确认
+      options:
+        - label: 该建议不要求引入重量级依赖或现成算法库（本项目坚持手写实现）
+          required: false
+        - label: 该建议不涉及提交含姓名学号的交付物或第三方作业
+          required: true

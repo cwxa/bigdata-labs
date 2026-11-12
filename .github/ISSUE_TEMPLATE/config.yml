@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 安全问题私密报告
+    url: https://github.com/cwxa/bigdata-labs/security/advisories/new
+    about: 请勿用公开 Issue 报告漏洞，走 GitHub 私密报告通道
+  - name: 阅读贡献指南
+    url: https://github.com/cwxa/bigdata-labs/blob/main/CONTRIBUTING.md
+    about: 分支模型、提交规范、本地验证清单与数据红线

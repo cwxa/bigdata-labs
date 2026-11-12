@@ -1,0 +1,71 @@
+name: 报告问题
+description: 报告代码、数据或论文中的错误
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢反馈。请尽量提供可复现的信息——"跑出来不对"无法定位问题。
+        安全相关的问题请勿在此提交，见 [SECURITY.md](../blob/main/SECURITY.md)。
+
+  - type: dropdown
+    id: scope
+    attributes:
+      label: 涉及部分
+      options:
+        - 实验一 · PCA 人脸重建（lab1）
+        - 实验二 · 关联规则挖掘（lab2）
+        - 论文源码与构建（paper）
+        - 文档（README / CONTRIBUTING 等）
+    validations:
+      required: true
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: 问题描述
+      description: 一句话说清现象。若与数字相关，请给出期望值与实际值。
+      placeholder: 例如：pca() 在 L=0 时抛出 IndexError，期望返回全零投影。
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: 复现步骤
+      description: 精确到命令与参数。
+      placeholder: |
+        1. cd lab1-pca-face-reconstruction
+        2. python -m unittest test_pca -v
+        3. 观察到 test_zero_components_yields_mean_face 失败
+      render: shell
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: 实际输出 / 报错栈
+      description: 请粘贴完整报错，不要只贴最后一行。
+      render: shell
+    validations:
+      required: false
+
+  - type: input
+    id: environment
+    attributes:
+      label: 运行环境
+      description: 操作系统、Python 版本、numpy / scikit-learn 版本
+      placeholder: Windows 11 · Python 3.12.10 · numpy 2.5.1 · scikit-learn 1.9.1
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: 提交前确认
+      options:
+        - label: 我已搜索过现有 Issue，确认不是重复问题
+          required: true
+        - label: 我已在本机重跑过相关脚本，问题可稳定复现
+          required: false
