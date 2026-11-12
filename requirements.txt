@@ -1,5 +1,5 @@
 # 实验一：PCA 人脸重建所需运行时（核心依赖）
-numpy>=1.26
+numpy>=2.5.4
 matplotlib>=3.8
 scikit-learn>=1.4
 
